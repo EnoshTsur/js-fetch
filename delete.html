@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <div class="delete">
+        <input type="number" id="id" placeholder="ID">
+        <button onclick="deleteHandler()">Delete</button>
+
+        <div id="container">
+
+        </div>
+    </div>
+
+</head>
+
+<body>
+
+    <script>
+
+        function deleteHandler() {
+            const id = document.getElementById('id').value
+            deleteUser(id)
+                .then(insertUser)
+                .catch(console.log)
+        }
+
+        async function deleteUser(id) {
+            const data = await fetch(`http://localhost:8080/users/delete/${id}`, { method: 'DELETE' })
+            return await data.json();
+        }
+
+        function insertUser({ id, firstName, lastName, email }) {
+
+            const container = document.getElementById('container')
+            container.innerHTML = ''
+
+            const header = document.createElement('h3')
+            console.log(header)
+            const idText = document.createElement('p')
+            const emailText = document.createElement('p')
+
+            header.appendChild(document.createTextNode(`${firstName}-${lastName}`))
+            idText.appendChild(document.createTextNode(`ID: ${id}`))
+            emailText.appendChild(document.createTextNode(`Email: ${email}`))
+
+            const elements = [header, idText, emailText]
+            elements.forEach(e => container.appendChild(e))
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>

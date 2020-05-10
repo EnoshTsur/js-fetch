@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Put</title>
+</head>
+<body>
+    
+    <input type="text" id="email" placeholder="Email">
+    <input type="number" id="id" placeholder="ID">
+    <button onclick="updateHandler()">Update</button>
+
+    <h3 id="update-text"></h3>
+
+    <script>
+
+        // http://localhost:8080/users/update?id=3&email=
+        
+        function updateHandler(){
+            const email = document.getElementById('email').value
+            const id = document.getElementById('id').value
+
+            updateUser(email, id)
+            .then(insertUser)
+            .catch(console.error)
+        }
+
+        async function updateUser(email, id) {
+            const url = `http://localhost:8080/users/update?id=${id}&email=${email}`
+            const data = await fetch(url, { method: 'PUT' })
+            return await data.json()
+        }
+
+        function insertUser(data) {
+            document.getElementById('update-text').innerText = JSON.stringify(data)
+        }
+
+    </script>
+
+</body>
+</html>

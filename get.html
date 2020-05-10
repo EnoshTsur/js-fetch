@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <div class="get">
+        <input type="number" id="get-id" placeholder="ID">
+        <button onclick="getHandler()">Get</button>
+        <h3 id="get-text"></h3>
+    </div>
+
+</head>
+<body>
+
+    <script>
+
+        function getHandler() {
+            const id = document.getElementById('get-id').value
+            getUser(id)
+            .then(insertUser)
+            .catch(console.log)
+        }
+
+        async function getUser(id) {
+            const data = await fetch(`http://localhost:8080/users/get/${id}`)
+            const response = await data.json();
+            return response;
+        }
+
+        function insertUser(data) {
+            document.getElementById('get-text').innerText = JSON.stringify(data)
+        }
+
+
+
+    </script>
+
+</body>
+</html>

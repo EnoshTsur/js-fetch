@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+</head>
+
+<body>
+
+    <input type="text" id="fname" placeholder="First Name">
+    <input type="text" id="lname" placeholder="Last Name">
+    <input type="email" id="email" placeholder="Email">
+
+    <button onclick="postHandler()">Create</button>
+    <h3 id="post-text"></h3>
+
+
+    <script>
+
+        function postHandler() {
+            const fname = document.getElementById('fname').value
+            const lname = document.getElementById('lname').value
+            const email = document.getElementById('email').value
+            const user = new User(fname, lname, email)
+
+            postUser(user)
+            .then(insertUser)
+            .catch(console.error)
+        }
+
+        function User(firstName, lastName, email) {
+            this.firstName = firstName
+            this.lastName = lastName
+            this.email = email
+        }
+
+        async function postUser(user) {
+            const data = await fetch(`http://localhost:8080/users/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+            return await data.json();
+        }
+
+        function insertUser(data) {
+            document.getElementById('post-text').innerText = JSON.stringify(data)
+        }
+    </script>
+</body>
+
+</html>
